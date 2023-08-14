@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 import database
 
+#Create the window
 app = tk.Tk()
 app.title('Book Reccomendation System')
 app.geometry('900x420')
@@ -11,12 +12,14 @@ app.rowconfigure(0, weight=1)
 app.columnconfigure(0,weight=1)
 app.resizable(False,False)
 
+#Add information to table
 def add_to_treeview():
     books = database.fetch_book()
     tree.delete(*tree.get_children())
     for book in books:
         tree.insert('', END, values=book)
 
+#Gets the users input in the text fields
 def insert():
     title = title_entry.get()
     ch = chapters_entry.get()
@@ -33,6 +36,7 @@ def insert():
         add_to_treeview()
         messagebox.showinfo('Sucess', 'You have successfully added it to you to read list.')
 
+#Clears all the entry boxes
 def clear(*clicked):
     if clicked:
         tree.selection_remove(tree.focus())
@@ -42,6 +46,7 @@ def clear(*clicked):
         website_entry.delete(0,END)
         recommend_entry.delete(0,END)
 
+#If an entry has been clicked on puts the details in entry boxes
 def display_data(event):
     selected = tree.focus()
     if selected:
@@ -53,6 +58,7 @@ def display_data(event):
         website_entry.insert(0,row[3])
         recommend_entry.insert(0,row[4])
 
+#Deletes an entry
 def delete():
     selected = tree.focus()
     if not selected:
@@ -64,6 +70,7 @@ def delete():
         clear()
         messagebox.showinfo('Success', title + 'has been removed from your list')
 
+#Updates an entry
 def update():
     selected = tree.focus()
     if not selected:
@@ -79,22 +86,27 @@ def update():
         clear()
         messagebox.showinfo('Success', title + 'has been updated.')
 
+#Frame for the whole window
 frame1 = tk.Frame(app, bg='#1974D1')
 frame1.grid(row=0,column=0,sticky='nsew')
 
+#===========Frame for Input Fields Area===============================
 frame2 = tk.Frame(frame1, bg='#c8c5f3', highlightbackground='#c5d9f3', highlightthickness=2)
 frame2.place(x=20, y=50)
 
+#Title of the book
 title_label = tk.Label(frame2, text="Title: ", bg='#c8c5f3')
 title_label.pack(padx = 20, pady = 5)
 title_entry = tk.Entry(frame2)
 title_entry.pack(padx = 20, pady = 5)
 
+#The number of chapters
 chapters_label = tk.Label(frame2, text="Chapters: ", bg='#c8c5f3')
 chapters_label.pack(padx = 20, pady = 5)
 chapters_entry = tk.Entry(frame2)
 chapters_entry.pack(padx = 20, pady = 5)
 
+#Combobox to ask if the book is being read
 read_label = tk.Label(frame2, text="Have already read: ", bg='#c8c5f3')
 read_label.pack(padx = 20, pady = 5)
 
@@ -106,36 +118,47 @@ read_options.pack(padx = 20, pady = 5)
 read_options.current(0)
 read_options.pack(padx=20, pady=5)
 
+#Asks for the website that it could be read on
 website_label = tk.Label(frame2, text="Website to read on: ", bg='#c8c5f3')
 website_label.pack(padx = 20, pady = 5)
 website_entry = tk.Entry(frame2)
 website_entry.pack(padx = 20, pady = 5)
 
+#Asks for where the recommendation came from
 recommend_label = tk.Label(frame2, text="Recommended from: ", bg='#c8c5f3')
 recommend_label.pack(padx = 20, pady = 5)
 recommend_entry = tk.Entry(frame2)
 recommend_entry.pack(padx = 20, pady = 5)
+
+#==============Frame For the buttons==================================
 
 frame3 = tk.Frame(frame1, bg='#c5d9f3', highlightbackground='#c5d9f3', highlightthickness=2)
 frame3.place(x=390, y=370)
 for x in range(4):
     frame3.columnconfigure(x, weight=1)
 
+#Add button used to add a book entry
 add_button = tk.Button(frame3, text="ADD", command=lambda:insert())
 add_button.grid(row=0, column=0, padx=20, pady=5)
 
+#Clear button used to clear text field
 clear_button = tk.Button(frame3, text="NEW", command=lambda:clear(True))
 clear_button.grid(row=0, column=1, padx=20, pady=5)
 
+#Update button used to update a book entry
 update_button = tk.Button(frame3, text="UPDATE", command=lambda:update())
 update_button.grid(row=0, column=2, padx=20, pady=5)
 
+#Deletes a book entry
 delete_button = tk.Button(frame3, text="DELETE", command=lambda:delete())
 delete_button.grid(row=0, column=3, padx=20, pady=5)
 
+
+#==========Frame for the table==============================================
 frame4 = tk.Frame(frame1, bg='#c5f3c8', highlightbackground='#c5d9f3', highlightthickness=2)
 frame4.place(x=250, y=30)
 
+#Creates the table on Tkinter using treeview
 tree = ttk.Treeview(frame4, height=15)
 tree['columns'] = ('Title', 'Chapters', 'Read', 'Website', 'Recommended')
 
