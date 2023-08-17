@@ -60,4 +60,12 @@ def title_exists(title):
     #print(result[0])
     return result is not None
 
+def searchByRead(read):
+    conn = sqlite3.connect('List.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM List WHERE read = ?', (read.lower().capitalize(),))
+    allread = cursor.fetchall()
+    conn.close()
+    return allread
+
 create_table()
