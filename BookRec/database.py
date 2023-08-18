@@ -68,4 +68,14 @@ def searchByRead(read):
     conn.close()
     return allread
 
+def searchByTitle(title):
+    conn = sqlite3.connect('List.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM List WHERE title = ?', (title.lower().capitalize(),))
+    titles = cursor.fetchall()
+    for t in titles:
+        print(t)
+    conn.close()
+    return titles
+
 create_table()

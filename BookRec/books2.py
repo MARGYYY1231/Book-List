@@ -12,8 +12,62 @@ app.rowconfigure(0, weight=1)
 app.columnconfigure(0,weight=1)
 app.resizable(False,False)
 
+#Get the search type
+def searchType():
+    global pop
+    pop = Toplevel(app)
+    pop.title("Type of search")
+    pop.geometry("250x150")
+    pop_Label = tk.Label(pop, text="Search By: ")
+    pop_Label.pack(pady=10)
+
+    v = IntVar()
+    v.set("1")
+    Radiobutton(pop, text="Title", variable=v, value=1).pack()
+    Radiobutton(pop, text="Chapter Range", variable=v, value=2).pack()
+    Radiobutton(pop, text="Read Status", variable=v, value=3).pack()
+
+    enter_button = tk.Button(pop, text="ENTER", command=lambda:search(v.get()))
+    enter_button.pack()
+
+#Search By title
+def titleSearch():
+    print("1 is printed")
+    spop.title("Search By Title")
+    title_search = tk.Label(spop, text="Enter Title: ")
+    title_search.pack()
+    title_search_entry = tk.Entry(spop)
+    title_search_entry.pack()
+    enter_button = tk.Button(spop, text="ENTER", command=lambda:add_title_to_treeview(title_search_entry.get().lower().capitalize()))
+    enter_button.pack()
+    title_entry.delete(0,END)
+    
+#Adding the one with th matching title into the treeview
+def add_title_to_treeview(t):
+    titles = database.searchByTitle(t)
+    clear_treeview()
+    for title in titles:
+        tree.insert('', END, values=title)
+    spop.destroy()
+
+def search(num):
+    pop.destroy()
+
+    global spop
+    spop = Toplevel(app)
+    spop.geometry("250x150")
+    if num == 1:
+        titleSearch()
+
+    
+#Clears the treeview
+def clear_treeview():
+    for item in tree.get_children():
+        tree.delete(item)
+
 #Add information to table
 def add_to_treeview():
+    clear_treeview()
     books = database.fetch_book()
     tree.delete(*tree.get_children())
     for book in books:
@@ -35,6 +89,7 @@ def insert():
         database.insert_book(title, ch, read, web, rec)
         add_to_treeview()
         messagebox.showinfo('Sucess', 'You have successfully added it to you to read list.')
+    clear(True)
 
 #Clears all the entry boxes
 def clear(*clicked):
@@ -67,7 +122,7 @@ def delete():
         title = title_entry.get()
         database.delete_book(title)
         add_to_treeview()
-        clear()
+        clear(True)
         messagebox.showinfo('Success', title + 'has been removed from your list')
 
 #Updates an entry
@@ -83,7 +138,7 @@ def update():
         rec = recommend_entry.get()
         database.update_book(ch, read, web, rec, title)
         add_to_treeview()
-        clear()
+        clear(True)
         messagebox.showinfo('Success', title + 'has been updated.')
 
 #Frame for the whole window
@@ -134,7 +189,7 @@ recommend_entry.pack(padx = 20, pady = 5)
 
 frame3 = tk.Frame(frame1, bg='#c5d9f3', highlightbackground='#c5d9f3', highlightthickness=2)
 frame3.place(x=390, y=370)
-for x in range(4):
+for x in range(5):
     frame3.columnconfigure(x, weight=1)
 
 #Add button used to add a book entry
@@ -153,6 +208,8 @@ update_button.grid(row=0, column=2, padx=20, pady=5)
 delete_button = tk.Button(frame3, text="DELETE", command=lambda:delete())
 delete_button.grid(row=0, column=3, padx=20, pady=5)
 
+search_button = tk.Button(frame3, text="SEARCH", command=lambda:searchType())
+search_button.grid(row=0, column=4, padx=20, pady=5)
 
 #==========Frame for the table==============================================
 frame4 = tk.Frame(frame1, bg='#c5f3c8', highlightbackground='#c5d9f3', highlightthickness=2)
