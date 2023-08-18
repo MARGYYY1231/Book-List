@@ -50,6 +50,7 @@ def add_title_to_treeview(t):
         tree.insert('', END, values=title)
     spop.destroy()
 
+#Creates a window so can search based on chosen type
 def search(num):
     pop.destroy()
 
