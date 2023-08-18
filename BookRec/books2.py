@@ -42,7 +42,7 @@ def titleSearch():
     enter_button.pack()
     title_entry.delete(0,END)
     
-#Adding the one with th matching title into the treeview
+#Adding the one with the matching title into the treeview
 def add_title_to_treeview(t):
     titles = database.searchByTitle(t)
     clear_treeview()
