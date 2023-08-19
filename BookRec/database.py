@@ -76,12 +76,12 @@ def searchByTitle(title):
     conn.close()
     return titles
 
-def searchByChap(start, end):
-    conn = sqlite3.connect('List.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM List WHERE chapters BETWEEN ? AND ?', (start, end,))
-    chapters = cursor.fetchall()
-    conn.close()
-    return chapters
+# def searchByChap(start, end):
+#     conn = sqlite3.connect('List.db')
+#     cursor = conn.cursor()
+#     cursor.execute('SELECT * FROM List WHERE chapters BETWEEN ? AND ?', (start, end,))
+#     chapters = cursor.fetchall()
+#     conn.close()
+#     return chapters
 
 create_table()
