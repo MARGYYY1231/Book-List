@@ -63,7 +63,7 @@ def title_exists(title):
 def searchByRead(read):
     conn = sqlite3.connect('List.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM List WHERE read = ?', (read.lower().capitalize(),))
+    cursor.execute('SELECT * FROM List WHERE read = ?', (read,))
     allread = cursor.fetchall()
     conn.close()
     return allread
@@ -73,9 +73,15 @@ def searchByTitle(title):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM List WHERE title = ?', (title.lower().capitalize(),))
     titles = cursor.fetchall()
-    for t in titles:
-        print(t)
     conn.close()
     return titles
+
+def searchByChap(start, end):
+    conn = sqlite3.connect('List.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM List WHERE chapters BETWEEN ? AND ?', (start, end,))
+    chapters = cursor.fetchall()
+    conn.close()
+    return chapters
 
 create_table()

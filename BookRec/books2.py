@@ -24,8 +24,7 @@ def searchType():
     v = IntVar()
     v.set("1")
     Radiobutton(pop, text="Title", variable=v, value=1).pack()
-    Radiobutton(pop, text="Chapter Range", variable=v, value=2).pack()
-    Radiobutton(pop, text="Read Status", variable=v, value=3).pack()
+    Radiobutton(pop, text="Read Status", variable=v, value=2).pack()
 
     enter_button = tk.Button(pop, text="ENTER", command=lambda:search(v.get()))
     enter_button.pack()
@@ -41,13 +40,35 @@ def titleSearch():
     enter_button = tk.Button(spop, text="ENTER", command=lambda:add_title_to_treeview(title_search_entry.get().lower().capitalize()))
     enter_button.pack()
     title_entry.delete(0,END)
-    
+
+#Search  by read
+def readSearch():
+    print("2 is printed")
+    spop.title("Search By Read")
+    read_select = tk.Label(spop, text="Choose reading status: ")
+    read_select.pack()
+    options2 = ['Read', 'Not Read', 'Reading']
+
+    read_options2 = ttk.Combobox(spop, values=options2, state='readonly')
+    read_options2.pack()
+    read_options2.current(0)
+    read_options2.pack()
+    enter_button = tk.Button(spop, text="ENTER", command=lambda:add_read_to_treeview(read_options2.get()))
+    enter_button.pack()
+
 #Adding the one with the matching title into the treeview
 def add_title_to_treeview(t):
     titles = database.searchByTitle(t)
     clear_treeview()
     for title in titles:
         tree.insert('', END, values=title)
+    spop.destroy()
+
+def add_read_to_treeview(r):
+    reads = database.searchByRead(r)
+    clear_treeview()
+    for read in reads:
+        tree.insert('', END, values=read)
     spop.destroy()
 
 #Creates a window so can search based on chosen type
@@ -59,6 +80,8 @@ def search(num):
     spop.geometry("250x150")
     if num == 1:
         titleSearch()
+    else:
+        readSearch()
 
     
 #Clears the treeview
