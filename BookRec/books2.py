@@ -189,8 +189,8 @@ recommend_entry.pack(padx = 20, pady = 5)
 #==============Frame For the buttons==================================
 
 frame3 = tk.Frame(frame1, bg='#c5d9f3', highlightbackground='#c5d9f3', highlightthickness=2)
-frame3.place(x=390, y=370)
-for x in range(5):
+frame3.place(x=280, y=370)
+for x in range(6):
     frame3.columnconfigure(x, weight=1)
 
 #Add button used to add a book entry
@@ -211,6 +211,9 @@ delete_button.grid(row=0, column=3, padx=20, pady=5)
 
 search_button = tk.Button(frame3, text="SEARCH", command=lambda:searchType())
 search_button.grid(row=0, column=4, padx=20, pady=5)
+
+reset_button = tk.Button(frame3, text="SHOW ALL", command=lambda:add_to_treeview())
+reset_button.grid(row=0, column=5, padx=20, pady=5)
 
 #==========Frame for the table==============================================
 frame4 = tk.Frame(frame1, bg='#c5f3c8', highlightbackground='#c5d9f3', highlightthickness=2)
